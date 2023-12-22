@@ -6,11 +6,11 @@ import javax.swing.*;
 
 public class Task {
 
-    private LocalDateTime createdDate;
-    private String title;
-    private String description;
-    private boolean completed;
-    private Date activeDate;
+    protected LocalDateTime createdDate;
+    protected String title;
+    protected String description;
+    protected boolean completed;
+    protected Date activeDate;
 
     // Constructor
     public Task(String title, String description, boolean completed, Date activeDate) {

@@ -15,7 +15,7 @@ public class Target extends Task {
     public LocalDateTime getFinishDate() {
         return finishDate;
     }
-
+    
     public void setFinishDate(LocalDateTime finishDate) {
         if (finishDate == null) {
             JOptionPane.showMessageDialog(null, "Finish Date cannot be empty");
