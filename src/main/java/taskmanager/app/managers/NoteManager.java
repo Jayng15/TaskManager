@@ -35,6 +35,12 @@ public class NoteManager implements Manager<Note> {
         return notes;
     }
 
+    @Override
+    public Note findById(int id)
+    {
+        return notes.get(id);
+    }
+
 
     
 }

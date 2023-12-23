@@ -5,17 +5,24 @@
 package taskmanager.app.templates;
 
 import java.awt.Color;
+import javax.swing.*;
+import taskmanager.app.controllers.TaskController;
+import taskmanager.app.entities.*;
+import taskmanager.app.managers.TaskManager;
+import java.awt.event.*;
 
 /**
  *
  * @author jayng
  */
 public class HomePage extends javax.swing.JFrame {
+    private User user;
 
     /**
      * Creates new form HomePage
      */
-    public HomePage() {
+    public HomePage(User user) {
+        this.user = user;
         initComponents();
     }
 
@@ -50,8 +57,8 @@ public class HomePage extends javax.swing.JFrame {
         teamMateLbl = new javax.swing.JLabel();
         AddMemBtn = new javax.swing.JButton();
         ObDisplay = new javax.swing.JTabbedPane();
-        TaskName = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        taskPn = new javax.swing.JPanel();
+        TaskName = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         TaskTxtPn = new javax.swing.JTextPane();
         TargetPanel = new javax.swing.JPanel();
@@ -98,7 +105,7 @@ public class HomePage extends javax.swing.JFrame {
         TaskList.setBorder(null);
         TaskList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TaskList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = TaskController.getTaskTitle(user).toArray(new String[0]);
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -240,30 +247,31 @@ public class HomePage extends javax.swing.JFrame {
 
         teamMateLbl.getAccessibleContext().setAccessibleDescription("");
 
-        TaskName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        taskPn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("TaskName");
+        TaskName.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        TaskName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        TaskName.setText("TaskName");
 
         jScrollPane5.setViewportView(TaskTxtPn);
 
-        javax.swing.GroupLayout TaskNameLayout = new javax.swing.GroupLayout(TaskName);
-        TaskName.setLayout(TaskNameLayout);
-        TaskNameLayout.setHorizontalGroup(
-            TaskNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout taskPnLayout = new javax.swing.GroupLayout(taskPn);
+        taskPn.setLayout(taskPnLayout);
+        taskPnLayout.setHorizontalGroup(
+            taskPnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane5)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 835, Short.MAX_VALUE)
+            .addComponent(TaskName, javax.swing.GroupLayout.DEFAULT_SIZE, 835, Short.MAX_VALUE)
         );
-        TaskNameLayout.setVerticalGroup(
-            TaskNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TaskNameLayout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(204, 204, 204)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE))
+        taskPnLayout.setVerticalGroup(
+            taskPnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(taskPnLayout.createSequentialGroup()
+                .addComponent(TaskName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        ObDisplay.addTab("Task", TaskName);
+        ObDisplay.addTab("Task", taskPn);
 
         TargetPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -285,7 +293,7 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(TargetPanelLayout.createSequentialGroup()
                 .addComponent(TargetName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -311,7 +319,7 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(NotePanelLayout.createSequentialGroup()
                 .addComponent(NoteName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE))
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE))
         );
 
         ObDisplay.addTab("Note", NotePanel);
@@ -364,6 +372,7 @@ public class HomePage extends javax.swing.JFrame {
 
     private void addTaskBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTaskBtnActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_addTaskBtnActionPerformed
 
     private void addNoteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNoteBtnActionPerformed
@@ -406,12 +415,14 @@ public class HomePage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new HomePage().setVisible(true);
-            }
-        });
+        // java.awt.EventQueue.invokeLater(new Runnable() {
+        //     public void run() {
+        //         new HomePage().setVisible(true);
+        //     }
+        // });
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMemBtn;
@@ -429,7 +440,7 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JPanel TargetPanel;
     private javax.swing.JTextPane TargetTxtPn;
     private javax.swing.JList<String> TaskList;
-    private javax.swing.JPanel TaskName;
+    private javax.swing.JLabel TaskName;
     private javax.swing.JTextPane TaskTxtPn;
     private javax.swing.JPanel TeamDisplay;
     private javax.swing.JButton UserButton;
@@ -437,7 +448,6 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JButton addTargetBtn;
     private javax.swing.JButton addTaskBtn;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -447,6 +457,7 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel taskLbl;
+    private javax.swing.JPanel taskPn;
     private javax.swing.JLabel teamMateLbl;
     // End of variables declaration//GEN-END:variables
 }

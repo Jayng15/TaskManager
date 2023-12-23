@@ -1,5 +1,7 @@
 package taskmanager.app.entities;
 
+
+import taskmanager.app.managers.*;
 import java.time.*;
 import java.util.*;
 import javax.swing.*;
@@ -10,15 +12,20 @@ public class Task {
     protected String title;
     protected String description;
     protected boolean completed;
-    protected Date activeDate;
+    // protected Date activeDate;
+    protected int id;
+    protected int author;
+    // private UserManager userManager;
 
     // Constructor
-    public Task(String title, String description, boolean completed, Date activeDate) {
+    public Task(String title, String description, boolean completed, int author, int id) {
         this.createdDate = LocalDateTime.now();
         setTitle(title);
         this.description = description;
         this.completed = completed;
-        setActiveDate(activeDate);
+        // setActiveDate(activeDate);
+        this.author = author;
+        this.id = id;
     }
 
     // Getter and Setter methods
@@ -55,18 +62,29 @@ public class Task {
         this.completed = completed;
     }
 
-    public Date getActiveDate() {
-        return activeDate;
+    // public Date getActiveDate() {
+    //     return activeDate;
+    // }
+
+    // public void setActiveDate(Date activeDate) {
+    //     if (activeDate == null)
+    //     {
+    //         JOptionPane.showMessageDialog(null, "Active date cannot be empty");
+    //         throw new IllegalArgumentException();
+    //     }
+    //     // this.activeDate = activeDate;
+    // }
+
+    public int getId()
+    {
+        return this.id;
     }
 
-    public void setActiveDate(Date activeDate) {
-        if (activeDate == null)
-        {
-            JOptionPane.showMessageDialog(null, "Active date cannot be empty");
-            throw new IllegalArgumentException();
-        }
-        this.activeDate = activeDate;
+    public User getAuthor(UserManager users)
+    {
+       return users.findById(author);
     }
+    
 
 }
 

@@ -393,7 +393,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="TaskName">
+        <Container class="javax.swing.JPanel" name="taskPn">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -413,21 +413,22 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane5" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel1" alignment="1" pref="835" max="32767" attributes="0"/>
+                  <Component id="TaskName" alignment="0" pref="835" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel1" min="-2" pref="43" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="204" max="-2" attributes="0"/>
-                      <Component id="jScrollPane5" pref="518" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="TaskName" min="-2" pref="43" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane5" min="-2" pref="746" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jLabel1">
+            <Component class="javax.swing.JLabel" name="TaskName">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="20" style="0"/>
@@ -477,7 +478,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="TargetName" min="-2" pref="43" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane6" pref="710" max="32767" attributes="0"/>
+                      <Component id="jScrollPane6" pref="800" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -534,7 +535,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="NoteName" min="-2" pref="43" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane7" pref="716" max="32767" attributes="0"/>
+                      <Component id="jScrollPane7" pref="806" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

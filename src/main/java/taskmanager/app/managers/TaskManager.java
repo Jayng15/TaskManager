@@ -18,13 +18,7 @@ public class TaskManager implements Manager<Task> {
 
     @Override
     public void remove(Task task){
-        for (Task t: tasks)
-        {
-            if(t == task)
-            {
-                this.tasks.remove(task);
-            }
-        }
+        tasks.remove(task);
     }
 
     @Override
@@ -32,5 +26,14 @@ public class TaskManager implements Manager<Task> {
     {
         return tasks;
     }
+
+    @Override
+    public Task findById(int id) {
+        if(!tasks.isEmpty())
+        {
+            return tasks.get(id);
+        }
+        return null;
+    } 
     
 }

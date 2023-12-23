@@ -10,4 +10,6 @@ public interface Manager<T> {
     public void remove(T object);
     
     public List<T> getAll();
+    
+    public T findById(int id);
 }

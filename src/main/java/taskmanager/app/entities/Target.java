@@ -7,8 +7,8 @@ import java.time.*;
 public class Target extends Task {
     private LocalDateTime finishDate;
 
-    public Target(String title, String description, boolean completed, Date activeDate, LocalDateTime finishDate) {
-        super(title, description, completed, activeDate);
+    public Target(String title, String description, boolean completed, Date activeDate, int author, int id, LocalDateTime finishDate) {
+        super(title, description, completed, activeDate, author, id);
         setFinishDate(finishDate); 
     }
 

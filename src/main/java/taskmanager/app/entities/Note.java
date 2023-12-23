@@ -8,6 +8,8 @@ public class Note {
     private LocalDateTime createdDate;
     private String title;
     private String description;
+    private int noteId;
+    private int author;
 
     public Note(String title, String description) {
         this.createdDate = LocalDateTime.now();
