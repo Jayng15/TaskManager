@@ -7,16 +7,21 @@ package taskmanager.app.templates;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.*;
+import taskmanager.app.entities.*;
 /**
  *
  * @author jayng
  */
 public class AddTask extends javax.swing.JFrame {
+    private User user;
+    private HomePage homePage;
 
     /**
      * Creates new form AddTask
      */
-    public AddTask() {
+    public AddTask(User user, HomePage homePage) {
+        this.user = user;
+        this.homePage = homePage;
         initComponents();
     }
 
@@ -62,6 +67,11 @@ public class AddTask extends javax.swing.JFrame {
         addBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         addBtn.setText("Add");
         addBtn.setToolTipText("");
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,6 +117,15 @@ public class AddTask extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        // TODO add your handling code here:
+        Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText());
+        user.addTask(task);
+
+        homePage.updateTaskList();
+        this.dispose();
+    }//GEN-LAST:event_addBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -135,36 +154,35 @@ public class AddTask extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddTask().setVisible(true);
-            }
-        });
+        // java.awt.EventQueue.invokeLater(new Runnable() {
+        //     public void run() {
+        //         new AddTask().setVisible(true);
+        //     }
+        // });
     }
 
-    private static void addPlaceholder(JTextField textField, String placeholder) {
-        textField.setForeground(Color.GRAY);
-        textField.setText(placeholder);
+    // private static void addPlaceholder(JTextField textField, String placeholder) {
+    //     textField.setForeground(Color.GRAY);
+    //     textField.setText(placeholder);
 
-        textField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (textField.getText().equals(placeholder)) {
-                    textField.setText("");
-                    textField.setForeground(Color.BLACK);
-                }
-            }
+    //     textField.addFocusListener(new FocusListener() {
+    //         @Override
+    //         public void focusGained(FocusEvent e) {
+    //             if (textField.getText().equals(placeholder)) {
+    //                 textField.setText("");
+    //                 textField.setForeground(Color.BLACK);
+    //             }
+    //         }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (textField.getText().isEmpty()) {
-                    textField.setForeground(Color.GRAY);
-                    textField.setText(placeholder);
-                }
-            }
-        });
-    }
-        });
+    //         @Override
+    //         public void focusLost(FocusEvent e) {
+    //             if (textField.getText().isEmpty()) {
+    //                 textField.setForeground(Color.GRAY);
+    //                 textField.setText(placeholder);
+    //             }
+    //         }
+    //     });
+    // }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JLabel contentLbl;

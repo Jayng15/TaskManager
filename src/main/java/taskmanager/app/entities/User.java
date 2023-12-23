@@ -1,12 +1,15 @@
 package taskmanager.app.entities;
 
 import java.util.*;
+
+import taskmanager.app.managers.UserManager;
 public class User {
     private int userId;    
     private String username;
     private String password;
     private List<Task> ownedTasks;
     private List<Target> ownedTargets;
+    private UserManager userManager;
 
     public User(String username, String password)
     {
@@ -15,11 +18,12 @@ public class User {
         this.password = password;
         this.ownedTasks = new ArrayList<>();
         this.ownedTargets = new ArrayList<>();
+        // this.userId = userManager.findById()
     }
 
     // Getter and setter methods
 
-    public int getUserId() {
+    public int getUserId(User user) {
         return userId;
     }
 

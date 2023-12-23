@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UserManager implements Manager<User> {
 
-    private List<User> userList; 
+    private static List<User> userList; 
 
     public UserManager() {
         this.userList = new ArrayList<>();

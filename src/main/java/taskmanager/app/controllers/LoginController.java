@@ -31,10 +31,11 @@ public class LoginController {
 
     }
 
-    public static void login(String username, String password) {
+    public static void login(String username, char[] password) {
+        String sPassword = new String(password);
         for (User u: userManager.getAll())
         {
-            if(u.getUsername().equals(username) && u.getPassword().equals(password))
+            if(u.getUsername().equals(username) && u.getPassword().equals(sPassword))
             {
                 JOptionPane.showMessageDialog(null,"Sucessfully");
                 HomePageController.show(u);

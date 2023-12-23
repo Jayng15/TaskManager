@@ -15,17 +15,19 @@ public class Task {
     // protected Date activeDate;
     protected int id;
     protected int author;
+    protected TaskManager taskManager;
     // private UserManager userManager;
 
     // Constructor
-    public Task(String title, String description, boolean completed, int author, int id) {
+    public Task(String title, String description) {
         this.createdDate = LocalDateTime.now();
         setTitle(title);
         this.description = description;
-        this.completed = completed;
+        // this.completed = completed;
         // setActiveDate(activeDate);
-        this.author = author;
-        this.id = id;
+        // this.author = author;
+
+        // this.id = id;
     }
 
     // Getter and Setter methods
