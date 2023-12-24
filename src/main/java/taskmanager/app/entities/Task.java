@@ -2,27 +2,33 @@ package taskmanager.app.entities;
 
 
 import taskmanager.app.managers.*;
+
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 import javax.swing.*;
 
 public class Task {
 
-    protected LocalDateTime createdDate;
+    protected Date createdDate;
+    protected Date deadLine;
     protected String title;
     protected String description;
     protected boolean completed;
     // protected Date activeDate;
-    protected int id;
+    // protected int id;
     protected int author;
     protected TaskManager taskManager;
     // private UserManager userManager;
 
     // Constructor
-    public Task(String title, String description) {
-        this.createdDate = LocalDateTime.now();
+    public Task(String title, String description, Date deadLine) {
+        this.createdDate = new Date();
         setTitle(title);
-        this.description = description;
+        setDescription(description);
+        setDeadLine(deadLine);
+        setCompleted(false);
+        // this.description = description;
         // this.completed = completed;
         // setActiveDate(activeDate);
         // this.author = author;
@@ -30,8 +36,11 @@ public class Task {
         // this.id = id;
     }
 
+    // public Task() {
+    // }
+
     // Getter and Setter methods
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
@@ -39,11 +48,18 @@ public class Task {
         return this.title;
     }
 
-    public void setTitle(String title) {
-        if (title == null)
+    public void setDeadLine(Date time) {
+        if (time.before(createdDate) || time.equals(createdDate))
         {
-            JOptionPane.showMessageDialog(null, "Title cannot be empty");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Deadline cannot be in the past");
+        }
+        this.deadLine = time;
+    }
+
+    public void setTitle(String title) {
+        if (title.equals(null))
+        {
+            throw new IllegalArgumentException("Title cannot be null");
         }
         this.title = title;
     }
@@ -63,6 +79,29 @@ public class Task {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+    
+    public String getCompleted() {
+        Date date = new Date();
+        if (this.completed == false && this.deadLine.before(date))
+        {
+            return "outdated";
+        }
+
+        if (this.completed == false)
+        {
+            return "pending";
+        }
+
+        return "finished";
+
+    }
+
+    public String getDeadline() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String date = dateFormat.format(this.deadLine);
+
+        return date;
+    }
 
     // public Date getActiveDate() {
     //     return activeDate;
@@ -77,10 +116,10 @@ public class Task {
     //     // this.activeDate = activeDate;
     // }
 
-    public int getId()
-    {
-        return this.id;
-    }
+    // public int getId()
+    // {
+    //     return this.id;
+    // }
 
     public User getAuthor(UserManager users)
     {

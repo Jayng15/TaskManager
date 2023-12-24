@@ -4,12 +4,12 @@ import java.util.*;
 
 import taskmanager.app.managers.UserManager;
 public class User {
-    private int userId;    
+    // private int userId;    
     private String username;
     private String password;
     private List<Task> ownedTasks;
-    private List<Target> ownedTargets;
     private UserManager userManager;
+    
 
     public User(String username, String password)
     {
@@ -17,15 +17,14 @@ public class User {
         this.username = username;  
         this.password = password;
         this.ownedTasks = new ArrayList<>();
-        this.ownedTargets = new ArrayList<>();
         // this.userId = userManager.findById()
     }
 
     // Getter and setter methods
 
-    public int getUserId(User user) {
-        return userId;
-    }
+    // public int getUserId(User user) {
+    //     return userId;
+    // }
 
     public String getUsername() {
         return username;
@@ -53,12 +52,8 @@ public class User {
         this.ownedTasks.add(task);
     }
 
-    public List<Target> getOwnTargets() {
-        return ownedTargets;
-    }
-
-    public void addTarget(Target target) {
-        this.ownedTargets.add(target);
+    public void removeTask(Task task){
+        this.ownedTasks.remove(task);
     }
 
 }

@@ -24,6 +24,8 @@ public class HomePage extends javax.swing.JFrame {
     public HomePage(User user) {
         this.user = user;
         initComponents();
+        loadListItem();
+        loadTaskPanel();
     }
 
     /**
@@ -38,43 +40,44 @@ public class HomePage extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        jDatePickerUtil1 = new org.jdatepicker.util.JDatePickerUtil();
         Navigator = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TargetList = new javax.swing.JList<>();
         taskLbl = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TaskList = new javax.swing.JList<>();
-        TargetLbl = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         NoteList = new javax.swing.JList<>();
-        addTaskBtn = new javax.swing.JButton();
-        addNoteBtn = new javax.swing.JButton();
-        addTargetBtn = new javax.swing.JButton();
+        rmvTaskBtn = new javax.swing.JButton();
+        rmvNoteButton = new javax.swing.JButton();
         NoteLbl = new javax.swing.JLabel();
+        addTaskBtn = new javax.swing.JButton();
+        addNoteBtn1 = new javax.swing.JButton();
         LogOutButton = new javax.swing.JButton();
-        UserButton = new javax.swing.JButton();
         TeamDisplay = new javax.swing.JPanel();
         teamMateLbl = new javax.swing.JLabel();
         AddMemBtn = new javax.swing.JButton();
         ObDisplay = new javax.swing.JTabbedPane();
         taskPn = new javax.swing.JPanel();
         TaskName = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        TaskTxtPn = new javax.swing.JTextPane();
-        TargetPanel = new javax.swing.JPanel();
-        TargetName = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        TargetTxtPn = new javax.swing.JTextPane();
-        NotePanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        finishBtn = new javax.swing.JButton();
+        statusLbl = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        deadlineLbl = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        taskTxtArea = new javax.swing.JTextArea();
+        Update = new javax.swing.JButton();
+        notePn = new javax.swing.JPanel();
         NoteName = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         NoteTxtPn = new javax.swing.JTextPane();
+        noteUpdateBtn = new javax.swing.JButton();
 
         jTextPane1.setText("asdasda");
         jScrollPane4.setViewportView(jTextPane1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1314, 766));
+        setTitle("TaskManager");
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -82,16 +85,6 @@ public class HomePage extends javax.swing.JFrame {
         });
 
         Navigator.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-
-        TargetList.setBorder(null);
-        TargetList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        TargetList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        TargetList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(TargetList);
 
         taskLbl.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         taskLbl.setForeground(new java.awt.Color(51, 51, 51));
@@ -106,12 +99,12 @@ public class HomePage extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         TaskList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        TaskList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                TaskListValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(TaskList);
-
-        TargetLbl.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        TargetLbl.setForeground(new java.awt.Color(51, 51, 51));
-        TargetLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        TargetLbl.setText("Targets");
 
         NoteList.setBorder(null);
         NoteList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -123,28 +116,20 @@ public class HomePage extends javax.swing.JFrame {
         NoteList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(NoteList);
 
-        addTaskBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        addTaskBtn.setText("Add Task");
-        addTaskBtn.addActionListener(new java.awt.event.ActionListener() {
+        rmvTaskBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rmvTaskBtn.setText("Remove Task");
+        rmvTaskBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addTaskBtnActionPerformed(evt);
+                rmvTaskBtnActionPerformed(evt);
             }
         });
 
-        addNoteBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        addNoteBtn.setText("Add Note");
-        addNoteBtn.setToolTipText("");
-        addNoteBtn.addActionListener(new java.awt.event.ActionListener() {
+        rmvNoteButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rmvNoteButton.setText("Remove Note");
+        rmvNoteButton.setToolTipText("");
+        rmvNoteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNoteBtnActionPerformed(evt);
-            }
-        });
-
-        addTargetBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        addTargetBtn.setText("Add Target");
-        addTargetBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addTargetBtnActionPerformed(evt);
+                rmvNoteButtonActionPerformed(evt);
             }
         });
 
@@ -153,49 +138,62 @@ public class HomePage extends javax.swing.JFrame {
         NoteLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         NoteLbl.setText("Notes");
 
+        addTaskBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        addTaskBtn.setText("Add Task");
+        addTaskBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTaskBtnActionPerformed(evt);
+            }
+        });
+
+        addNoteBtn1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        addNoteBtn1.setText("Add Note");
+        addNoteBtn1.setToolTipText("");
+        addNoteBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNoteBtn1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout NavigatorLayout = new javax.swing.GroupLayout(Navigator);
         Navigator.setLayout(NavigatorLayout);
         NavigatorLayout.setHorizontalGroup(
             NavigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(taskLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(TargetLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane3)
             .addComponent(NoteLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(NavigatorLayout.createSequentialGroup()
-                .addGroup(NavigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(NavigatorLayout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(addTargetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(NavigatorLayout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addComponent(addNoteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(NavigatorLayout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(addTaskBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(124, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(38, 38, 38)
+                .addComponent(addTaskBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(rmvTaskBtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NavigatorLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(addNoteBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(rmvNoteButton)
+                .addGap(34, 34, 34))
         );
         NavigatorLayout.setVerticalGroup(
             NavigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(NavigatorLayout.createSequentialGroup()
                 .addComponent(taskLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addTaskBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(TargetLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addTargetBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(NavigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rmvTaskBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addTaskBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(NoteLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addNoteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(NavigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rmvNoteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addNoteBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -204,15 +202,6 @@ public class HomePage extends javax.swing.JFrame {
         LogOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LogOutButtonActionPerformed(evt);
-            }
-        });
-
-        UserButton.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        UserButton.setText("User");
-        UserButton.setToolTipText("");
-        UserButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UserButtonActionPerformed(evt);
             }
         });
 
@@ -257,53 +246,79 @@ public class HomePage extends javax.swing.JFrame {
         TaskName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TaskName.setText("TaskName");
 
-        jScrollPane5.setViewportView(TaskTxtPn);
+        jLabel1.setText("Status:");
+
+        finishBtn.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        finishBtn.setText("Finish");
+        finishBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finishBtnActionPerformed(evt);
+            }
+        });
+
+        statusLbl.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        statusLbl.setText("Task Status");
+
+        jLabel3.setText("End at:");
+
+        deadlineLbl.setText("dd/mm/yyyy");
+
+        taskTxtArea.setColumns(20);
+        taskTxtArea.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        taskTxtArea.setRows(5);
+        jScrollPane1.setViewportView(taskTxtArea);
+
+        Update.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        Update.setText("Update");
+        Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout taskPnLayout = new javax.swing.GroupLayout(taskPn);
         taskPn.setLayout(taskPnLayout);
         taskPnLayout.setHorizontalGroup(
             taskPnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(TaskName, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
-            .addComponent(jScrollPane5)
+            .addGroup(taskPnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(taskPnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, taskPnLayout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deadlineLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(statusLbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
+                        .addComponent(Update, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
+            .addComponent(TaskName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         taskPnLayout.setVerticalGroup(
             taskPnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(taskPnLayout.createSequentialGroup()
                 .addComponent(TaskName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(taskPnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(deadlineLbl)
+                    .addComponent(jLabel1)
+                    .addComponent(statusLbl)
+                    .addComponent(Update, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         ObDisplay.addTab("Task", taskPn);
 
-        TargetPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        TargetName.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        TargetName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        TargetName.setText("TargetName");
-
-        jScrollPane6.setViewportView(TargetTxtPn);
-
-        javax.swing.GroupLayout TargetPanelLayout = new javax.swing.GroupLayout(TargetPanel);
-        TargetPanel.setLayout(TargetPanelLayout);
-        TargetPanelLayout.setHorizontalGroup(
-            TargetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(TargetName, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
-            .addComponent(jScrollPane6)
-        );
-        TargetPanelLayout.setVerticalGroup(
-            TargetPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TargetPanelLayout.createSequentialGroup()
-                .addComponent(TargetName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        ObDisplay.addTab("Target", TargetPanel);
-
-        NotePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        notePn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         NoteName.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         NoteName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -311,22 +326,35 @@ public class HomePage extends javax.swing.JFrame {
 
         jScrollPane7.setViewportView(NoteTxtPn);
 
-        javax.swing.GroupLayout NotePanelLayout = new javax.swing.GroupLayout(NotePanel);
-        NotePanel.setLayout(NotePanelLayout);
-        NotePanelLayout.setHorizontalGroup(
-            NotePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        noteUpdateBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        noteUpdateBtn.setText("Update");
+
+        javax.swing.GroupLayout notePnLayout = new javax.swing.GroupLayout(notePn);
+        notePn.setLayout(notePnLayout);
+        notePnLayout.setHorizontalGroup(
+            notePnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(NoteName, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
-            .addComponent(jScrollPane7)
+            .addGroup(notePnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(notePnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, notePnLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(noteUpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
-        NotePanelLayout.setVerticalGroup(
-            NotePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(NotePanelLayout.createSequentialGroup()
+        notePnLayout.setVerticalGroup(
+            notePnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(notePnLayout.createSequentialGroup()
                 .addComponent(NoteName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE))
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(noteUpdateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        ObDisplay.addTab("Note", NotePanel);
+        ObDisplay.addTab("Note", notePn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -339,8 +367,7 @@ public class HomePage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(UserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(96, 96, 96)
                         .addComponent(LogOutButton)
                         .addContainerGap())
                     .addComponent(TeamDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -349,9 +376,7 @@ public class HomePage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LogOutButton)
-                    .addComponent(UserButton))
+                .addComponent(LogOutButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TeamDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(ObDisplay)
@@ -369,27 +394,49 @@ public class HomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_LogOutButtonActionPerformed
 
-    private void UserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserButtonActionPerformed
+    private void AddMemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMemBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_UserButtonActionPerformed
+    }//GEN-LAST:event_AddMemBtnActionPerformed
+
+    private void rmvNoteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmvNoteButtonActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_rmvNoteButtonActionPerformed
+
+    private void rmvTaskBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmvTaskBtnActionPerformed
+        // TODO add your handling code here:
+        Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
+        user.removeTask(task);
+        loadListItem();
+
+    }//GEN-LAST:event_rmvTaskBtnActionPerformed
 
     private void addTaskBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTaskBtnActionPerformed
         // TODO add your handling code here:
         new AddTask(user, this).setVisible(true);
-        
     }//GEN-LAST:event_addTaskBtnActionPerformed
 
-    private void addNoteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNoteBtnActionPerformed
+    private void addNoteBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNoteBtn1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addNoteBtnActionPerformed
+    }//GEN-LAST:event_addNoteBtn1ActionPerformed
 
-    private void addTargetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTargetBtnActionPerformed
+    private void finishBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addTargetBtnActionPerformed
+        Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
+        task.setCompleted(true);
+        statusLbl.setText(task.getCompleted());
 
-    private void AddMemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMemBtnActionPerformed
+    }//GEN-LAST:event_finishBtnActionPerformed
+
+    private void TaskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_TaskListValueChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_AddMemBtnActionPerformed
+        loadTaskPanel();
+    }//GEN-LAST:event_TaskListValueChanged
+
+    private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
+        // TODO add your handling code here:
+        new AddTask(user, this, TaskList.getSelectedIndex()).setVisible(true);;
+    }//GEN-LAST:event_UpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -439,6 +486,52 @@ public class HomePage extends javax.swing.JFrame {
         });
     }
 
+    private void loadListItem() {
+        TaskList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = TaskController.getTaskTitle(user).toArray(new String[0]);
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        NoteList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "", "", "", "", "" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+
+    }
+    
+    private void loadTaskPanel() {
+        if (TaskList.getSelectedValue() == null) {
+            TaskName.setText("");
+
+            statusLbl.setText("");
+
+            taskTxtArea.setEditable(false);
+            taskTxtArea.setText("");
+
+            deadlineLbl.setText("");
+
+            return;
+        }
+        // TaskName.setText = 
+        int id = TaskList.getSelectedIndex();
+        Task task = user.getOwnTasks().get(id);
+
+        TaskName.setText(task.getTitle());
+
+        statusLbl.setText(task.getCompleted());
+
+        taskTxtArea.setEditable(false);
+        taskTxtArea.setText(task.getDescription());
+
+        deadlineLbl.setText(task.getDeadline());
+
+        // taskPn.setVisible(true);
+        // notePn.setVisible(true);
+        // ObDisplay.add(taskPn);
+        // ObDisplay.add(notePn);
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMemBtn;
@@ -447,33 +540,34 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JLabel NoteLbl;
     private javax.swing.JList<String> NoteList;
     private javax.swing.JLabel NoteName;
-    private javax.swing.JPanel NotePanel;
     private javax.swing.JTextPane NoteTxtPn;
     private javax.swing.JTabbedPane ObDisplay;
-    private javax.swing.JLabel TargetLbl;
-    private javax.swing.JList<String> TargetList;
-    private javax.swing.JLabel TargetName;
-    private javax.swing.JPanel TargetPanel;
-    private javax.swing.JTextPane TargetTxtPn;
     private javax.swing.JList<String> TaskList;
     private javax.swing.JLabel TaskName;
-    private javax.swing.JTextPane TaskTxtPn;
     private javax.swing.JPanel TeamDisplay;
-    private javax.swing.JButton UserButton;
-    private javax.swing.JButton addNoteBtn;
-    private javax.swing.JButton addTargetBtn;
+    private javax.swing.JButton Update;
+    private javax.swing.JButton addNoteBtn1;
     private javax.swing.JButton addTaskBtn;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel deadlineLbl;
+    private javax.swing.JButton finishBtn;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JPanel notePn;
+    private javax.swing.JButton noteUpdateBtn;
+    private javax.swing.JButton rmvNoteButton;
+    private javax.swing.JButton rmvTaskBtn;
+    private javax.swing.JLabel statusLbl;
     private javax.swing.JLabel taskLbl;
     private javax.swing.JPanel taskPn;
+    private javax.swing.JTextArea taskTxtArea;
     private javax.swing.JLabel teamMateLbl;
     // End of variables declaration//GEN-END:variables
 }

@@ -15,15 +15,26 @@ import taskmanager.app.entities.*;
 public class AddTask extends javax.swing.JFrame {
     private User user;
     private HomePage homePage;
+    private int selectedTaskId;
 
     /**
      * Creates new form AddTask
      */
+    public AddTask(User user, HomePage homePage, int selectedTaskId) { 
+        this.user = user;
+        this.homePage = homePage;
+        this.selectedTaskId = selectedTaskId;
+        initComponents();
+        loadTask();
+    }
+
     public AddTask(User user, HomePage homePage) {
         this.user = user;
         this.homePage = homePage;
+        this.selectedTaskId = -1;
         initComponents();
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,12 +48,15 @@ public class AddTask extends javax.swing.JFrame {
         taskTitleLbl = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         titleTxtArea = new javax.swing.JTextArea();
-        contentLbl = new javax.swing.JLabel();
+        deadLineLbl = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         contentTxtArea = new javax.swing.JTextArea();
         addBtn = new javax.swing.JButton();
+        deadlinePicker = new com.toedter.calendar.JCalendar();
+        contentLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Add Task");
 
         taskTitleLbl.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         taskTitleLbl.setText("Enter title:");
@@ -54,8 +68,8 @@ public class AddTask extends javax.swing.JFrame {
         titleTxtArea.setToolTipText("");
         jScrollPane1.setViewportView(titleTxtArea);
 
-        contentLbl.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        contentLbl.setText("Enter Content:");
+        deadLineLbl.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        deadLineLbl.setText("Enter your deadline:");
 
         contentTxtArea.setColumns(20);
         contentTxtArea.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -73,45 +87,61 @@ public class AddTask extends javax.swing.JFrame {
             }
         });
 
+        deadlinePicker.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        contentLbl.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        contentLbl.setText("Enter Content:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(contentLbl)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(taskTitleLbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(taskTitleLbl))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(335, 335, 335)
-                        .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(contentLbl)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(deadLineLbl)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 72, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(78, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(202, 202, 202)
+                .addComponent(deadlinePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(330, 330, 330)
+                .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(taskTitleLbl))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(26, 26, 26)
+                .addGap(15, 15, 15)
+                .addComponent(taskTitleLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentLbl)
+                .addGap(8, 8, 8)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(deadLineLbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deadlinePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
 
         pack();
@@ -119,12 +149,39 @@ public class AddTask extends javax.swing.JFrame {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
-        Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText());
-        user.addTask(task);
+        // Task task = new Task();
+        if (selectedTaskId != -1)
+        {
+            try {
+                Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText(), deadlinePicker.getDate());
+                user.getOwnTasks().set(selectedTaskId, task);
+                homePage.updateTaskList();
+                this.dispose();
+                return;
+            }
+            catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+        try {
+            Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText(), deadlinePicker.getDate());
+            user.addTask(task);
+            homePage.updateTaskList();
+            this.dispose();
+        }
+        catch (IllegalArgumentException e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
 
-        homePage.updateTaskList();
-        this.dispose();
     }//GEN-LAST:event_addBtnActionPerformed
+
+    private void loadTask() {
+        Task task = user.getOwnTasks().get(selectedTaskId);
+        titleTxtArea.setText(task.getTitle());
+        contentTxtArea.setText(task.getDescription());
+        addBtn.setText("Update");
+    }
 
     /**
      * @param args the command line arguments
@@ -187,6 +244,8 @@ public class AddTask extends javax.swing.JFrame {
     private javax.swing.JButton addBtn;
     private javax.swing.JLabel contentLbl;
     private javax.swing.JTextArea contentTxtArea;
+    private javax.swing.JLabel deadLineLbl;
+    private com.toedter.calendar.JCalendar deadlinePicker;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel taskTitleLbl;
