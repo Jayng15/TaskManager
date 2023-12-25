@@ -5,8 +5,12 @@
 package taskmanager.app.templates;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
 import java.awt.Color;
 import java.awt.event.*;
+import java.util.*;
+import taskmanager.app.controllers.LoginController;
 import taskmanager.app.entities.*;
 /**
  *
@@ -54,6 +58,7 @@ public class AddTask extends javax.swing.JFrame {
         addBtn = new javax.swing.JButton();
         deadlinePicker = new com.toedter.calendar.JCalendar();
         contentLbl = new javax.swing.JLabel();
+        importBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Task");
@@ -92,18 +97,23 @@ public class AddTask extends javax.swing.JFrame {
         contentLbl.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         contentLbl.setText("Enter Content:");
 
+        importBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        importBtn.setText("Import");
+        importBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(taskTitleLbl))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(contentLbl)))
+                    .addComponent(taskTitleLbl)
+                    .addComponent(contentLbl))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -117,11 +127,13 @@ public class AddTask extends javax.swing.JFrame {
                 .addContainerGap(78, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(202, 202, 202)
-                .addComponent(deadlinePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(330, 330, 330)
-                .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50))
+                    .addComponent(deadlinePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -140,7 +152,9 @@ public class AddTask extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deadlinePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(importBtn))
                 .addGap(19, 19, 19))
         );
 
@@ -150,10 +164,11 @@ public class AddTask extends javax.swing.JFrame {
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
         // Task task = new Task();
+  
         if (selectedTaskId != -1)
         {
             try {
-                Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText(), deadlinePicker.getDate());
+                Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText(), deadlinePicker.getDate(), user);
                 user.getOwnTasks().set(selectedTaskId, task);
                 homePage.updateTaskList();
                 this.dispose();
@@ -164,7 +179,7 @@ public class AddTask extends javax.swing.JFrame {
             }
         }
         try {
-            Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText(), deadlinePicker.getDate());
+            Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText(), deadlinePicker.getDate(), user);
             user.addTask(task);
             homePage.updateTaskList();
             this.dispose();
@@ -175,6 +190,35 @@ public class AddTask extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_addBtnActionPerformed
+
+    private void importBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importBtnActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select .txt file");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Text files (*.txt)", "txt"));
+        
+        int userSelection = fileChooser.showOpenDialog(null);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
+                StringBuilder title = new StringBuilder();
+                StringBuilder content = new StringBuilder();
+                String line;
+                title.append(reader.readLine());
+                reader.readLine();
+                while((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
+                titleTxtArea.setText(title.toString());
+                contentTxtArea.setText(content.toString());
+            }
+            catch (IOException e)
+            {
+                JOptionPane.showMessageDialog(null, "Cannot open this file");
+            }
+        }
+    }//GEN-LAST:event_importBtnActionPerformed
 
     private void loadTask() {
         Task task = user.getOwnTasks().get(selectedTaskId);
@@ -246,6 +290,7 @@ public class AddTask extends javax.swing.JFrame {
     private javax.swing.JTextArea contentTxtArea;
     private javax.swing.JLabel deadLineLbl;
     private com.toedter.calendar.JCalendar deadlinePicker;
+    private javax.swing.JButton importBtn;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel taskTitleLbl;

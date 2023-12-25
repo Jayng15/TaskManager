@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 
 public class LoginController {
-    private static UserManager userManager = new UserManager();
+    public static UserManager userManager = new UserManager();
 
 
     public static void show() {
@@ -39,10 +39,10 @@ public class LoginController {
             {
                 JOptionPane.showMessageDialog(null,"Sucessfully");
                 HomePageController.show(u);
-                break;
+                return;
             }
-            throw new IllegalArgumentException("Wrong username or password");
         }
+        throw new IllegalArgumentException("Wrong username or password");
     
     }
 }

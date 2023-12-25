@@ -1,6 +1,7 @@
 package taskmanager.app.entities;
 
 
+import taskmanager.app.controllers.LoginController;
 import taskmanager.app.managers.*;
 
 import java.text.SimpleDateFormat;
@@ -17,17 +18,21 @@ public class Task {
     protected boolean completed;
     // protected Date activeDate;
     // protected int id;
-    protected int author;
+    // protected int author;
     protected TaskManager taskManager;
+    protected UserManager userManager;
+    private List<User> companions;
     // private UserManager userManager;
 
     // Constructor
-    public Task(String title, String description, Date deadLine) {
+    public Task(String title, String description, Date deadLine, User author) {
         this.createdDate = new Date();
         setTitle(title);
         setDescription(description);
         setDeadLine(deadLine);
         setCompleted(false);
+        companions = new ArrayList<>();
+        companions.add(author);
         // this.description = description;
         // this.completed = completed;
         // setActiveDate(activeDate);
@@ -121,11 +126,36 @@ public class Task {
     //     return this.id;
     // }
 
-    public User getAuthor(UserManager users)
-    {
-       return users.findById(author);
-    }
+    // public User getAuthor(UserManager users)
+    // {
+    //    return users.findById(author);
+    // }
     
+
+    public void addCompanion(String username, Task task) {
+        User user; 
+        UserManager users = LoginController.userManager;
+        for (User u: users.getAll())
+        {
+            if (u.getUsername().equals(username))
+            {
+                this.companions.add(u);
+                u.assignTask(task);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Cannot find the specified user");
+
+    }
+
+    public void removeCompanion(User user) {
+        this.companions.remove(user);
+    }
+
+    public List<User> getAllCompanions() {
+        return this.companions;
+    }
+
 
 }
 

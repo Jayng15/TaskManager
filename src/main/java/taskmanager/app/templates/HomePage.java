@@ -25,7 +25,7 @@ public class HomePage extends javax.swing.JFrame {
         this.user = user;
         initComponents();
         loadListItem();
-        loadTaskPanel();
+        // loadTaskPanel();
     }
 
     /**
@@ -46,16 +46,17 @@ public class HomePage extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         TaskList = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        NoteList = new javax.swing.JList<>();
+        assignedTaskList = new javax.swing.JList<>();
         rmvTaskBtn = new javax.swing.JButton();
-        rmvNoteButton = new javax.swing.JButton();
-        NoteLbl = new javax.swing.JLabel();
+        assignedTaskLbl = new javax.swing.JLabel();
         addTaskBtn = new javax.swing.JButton();
-        addNoteBtn1 = new javax.swing.JButton();
         LogOutButton = new javax.swing.JButton();
         TeamDisplay = new javax.swing.JPanel();
         teamMateLbl = new javax.swing.JLabel();
         AddMemBtn = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        companionList = new javax.swing.JList<>();
+        removeTeammateBtn = new javax.swing.JButton();
         ObDisplay = new javax.swing.JTabbedPane();
         taskPn = new javax.swing.JPanel();
         TaskName = new javax.swing.JLabel();
@@ -67,11 +68,6 @@ public class HomePage extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         taskTxtArea = new javax.swing.JTextArea();
         Update = new javax.swing.JButton();
-        notePn = new javax.swing.JPanel();
-        NoteName = new javax.swing.JLabel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        NoteTxtPn = new javax.swing.JTextPane();
-        noteUpdateBtn = new javax.swing.JButton();
 
         jTextPane1.setText("asdasda");
         jScrollPane4.setViewportView(jTextPane1);
@@ -89,7 +85,7 @@ public class HomePage extends javax.swing.JFrame {
         taskLbl.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         taskLbl.setForeground(new java.awt.Color(51, 51, 51));
         taskLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        taskLbl.setText("Tasks");
+        taskLbl.setText("Your Tasks");
 
         TaskList.setBorder(null);
         TaskList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -99,6 +95,11 @@ public class HomePage extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         TaskList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        TaskList.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TaskListFocusLost(evt);
+            }
+        });
         TaskList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 TaskListValueChanged(evt);
@@ -106,15 +107,25 @@ public class HomePage extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TaskList);
 
-        NoteList.setBorder(null);
-        NoteList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        NoteList.setModel(new javax.swing.AbstractListModel<String>() {
+        assignedTaskList.setBorder(null);
+        assignedTaskList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        assignedTaskList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        NoteList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(NoteList);
+        assignedTaskList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        assignedTaskList.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                assignedTaskListFocusLost(evt);
+            }
+        });
+        assignedTaskList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                assignedTaskListValueChanged(evt);
+            }
+        });
+        jScrollPane3.setViewportView(assignedTaskList);
 
         rmvTaskBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         rmvTaskBtn.setText("Remove Task");
@@ -124,34 +135,16 @@ public class HomePage extends javax.swing.JFrame {
             }
         });
 
-        rmvNoteButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        rmvNoteButton.setText("Remove Note");
-        rmvNoteButton.setToolTipText("");
-        rmvNoteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rmvNoteButtonActionPerformed(evt);
-            }
-        });
-
-        NoteLbl.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        NoteLbl.setForeground(new java.awt.Color(51, 51, 51));
-        NoteLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        NoteLbl.setText("Notes");
+        assignedTaskLbl.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        assignedTaskLbl.setForeground(new java.awt.Color(51, 51, 51));
+        assignedTaskLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        assignedTaskLbl.setText("Assigned Tasks");
 
         addTaskBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         addTaskBtn.setText("Add Task");
         addTaskBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addTaskBtnActionPerformed(evt);
-            }
-        });
-
-        addNoteBtn1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        addNoteBtn1.setText("Add Note");
-        addNoteBtn1.setToolTipText("");
-        addNoteBtn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNoteBtn1ActionPerformed(evt);
             }
         });
 
@@ -162,19 +155,13 @@ public class HomePage extends javax.swing.JFrame {
             .addComponent(taskLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jScrollPane3)
-            .addComponent(NoteLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(assignedTaskLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(NavigatorLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(addTaskBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
                 .addComponent(rmvTaskBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NavigatorLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(addNoteBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addComponent(rmvNoteButton)
-                .addGap(34, 34, 34))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         NavigatorLayout.setVerticalGroup(
             NavigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,13 +174,9 @@ public class HomePage extends javax.swing.JFrame {
                     .addComponent(rmvTaskBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addTaskBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(NoteLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(assignedTaskLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(NavigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rmvNoteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addNoteBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -212,10 +195,26 @@ public class HomePage extends javax.swing.JFrame {
         teamMateLbl.setText("Teammates");
 
         AddMemBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        AddMemBtn.setText("Add Teammate");
+        AddMemBtn.setText("Add");
         AddMemBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddMemBtnActionPerformed(evt);
+            }
+        });
+
+        companionList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        companionList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane5.setViewportView(companionList);
+
+        removeTeammateBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        removeTeammateBtn.setText("Remove");
+        removeTeammateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeTeammateBtnActionPerformed(evt);
             }
         });
 
@@ -224,17 +223,24 @@ public class HomePage extends javax.swing.JFrame {
         TeamDisplayLayout.setHorizontalGroup(
             TeamDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(teamMateLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TeamDisplayLayout.createSequentialGroup()
+            .addGroup(TeamDisplayLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(AddMemBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(AddMemBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(removeTeammateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jScrollPane5)
         );
         TeamDisplayLayout.setVerticalGroup(
             TeamDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TeamDisplayLayout.createSequentialGroup()
                 .addComponent(teamMateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(AddMemBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(TeamDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AddMemBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeTeammateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -265,6 +271,7 @@ public class HomePage extends javax.swing.JFrame {
 
         taskTxtArea.setColumns(20);
         taskTxtArea.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        taskTxtArea.setLineWrap(true);
         taskTxtArea.setRows(5);
         jScrollPane1.setViewportView(taskTxtArea);
 
@@ -291,7 +298,7 @@ public class HomePage extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(statusLbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 238, Short.MAX_VALUE)
                         .addComponent(Update, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(finishBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -318,44 +325,6 @@ public class HomePage extends javax.swing.JFrame {
 
         ObDisplay.addTab("Task", taskPn);
 
-        notePn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        NoteName.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        NoteName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        NoteName.setText("NoteName");
-
-        jScrollPane7.setViewportView(NoteTxtPn);
-
-        noteUpdateBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        noteUpdateBtn.setText("Update");
-
-        javax.swing.GroupLayout notePnLayout = new javax.swing.GroupLayout(notePn);
-        notePn.setLayout(notePnLayout);
-        notePnLayout.setHorizontalGroup(
-            notePnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(NoteName, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
-            .addGroup(notePnLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(notePnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, notePnLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(noteUpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        notePnLayout.setVerticalGroup(
-            notePnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(notePnLayout.createSequentialGroup()
-                .addComponent(NoteName, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(noteUpdateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        ObDisplay.addTab("Note", notePn);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -365,12 +334,9 @@ public class HomePage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ObDisplay)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addComponent(LogOutButton)
-                        .addContainerGap())
-                    .addComponent(TeamDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TeamDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LogOutButton)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,22 +358,31 @@ public class HomePage extends javax.swing.JFrame {
 
     private void LogOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogOutButtonActionPerformed
         // TODO add your handling code here:
+        int result = JOptionPane.showOptionDialog(
+                null, 
+                "Are you sure?", 
+                "Confirmation", 
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new Object[]{"Yes", "No"},
+                "Yes" 
+        );
+
+        if (result == JOptionPane.YES_OPTION) {
+            this.dispose();
+            new LoginForm().setVisible(true);
+
+        } 
     }//GEN-LAST:event_LogOutButtonActionPerformed
-
-    private void AddMemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMemBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AddMemBtnActionPerformed
-
-    private void rmvNoteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmvNoteButtonActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_rmvNoteButtonActionPerformed
 
     private void rmvTaskBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rmvTaskBtnActionPerformed
         // TODO add your handling code here:
-        Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
-        user.removeTask(task);
-        loadListItem();
+        try {
+            Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
+            user.removeTask(task);
+            updateTaskList();
+        } catch (IndexOutOfBoundsException e) {}
 
     }//GEN-LAST:event_rmvTaskBtnActionPerformed
 
@@ -416,27 +391,72 @@ public class HomePage extends javax.swing.JFrame {
         new AddTask(user, this).setVisible(true);
     }//GEN-LAST:event_addTaskBtnActionPerformed
 
-    private void addNoteBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNoteBtn1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addNoteBtn1ActionPerformed
-
     private void finishBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishBtnActionPerformed
         // TODO add your handling code here:
-        Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
-        task.setCompleted(true);
-        statusLbl.setText(task.getCompleted());
+        try {
+            Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
+            task.setCompleted(true);
+            statusLbl.setText(task.getCompleted());
+        } catch (Exception e) {}
 
     }//GEN-LAST:event_finishBtnActionPerformed
 
     private void TaskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_TaskListValueChanged
         // TODO add your handling code here:
-        loadTaskPanel();
+        assignedTaskList.clearSelection();
+        try {
+            Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
+            loadTaskPanel(task);
+        } catch (Exception e) {}
     }//GEN-LAST:event_TaskListValueChanged
 
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
         // TODO add your handling code here:
-        new AddTask(user, this, TaskList.getSelectedIndex()).setVisible(true);;
+        try {
+
+            new AddTask(user, this, TaskList.getSelectedIndex()).setVisible(true);;
+        } catch (Exception e) {}
     }//GEN-LAST:event_UpdateActionPerformed
+
+    private void removeTeammateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeTeammateBtnActionPerformed
+        // TODO add your handling code here:
+        try {
+            Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
+            User selectedUser = task.getAllCompanions().get(companionList.getSelectedIndex());
+            task.removeCompanion(selectedUser);
+            updateTeammateList(task);
+        } catch (IndexOutOfBoundsException e) {}
+        
+    }//GEN-LAST:event_removeTeammateBtnActionPerformed
+
+    private void AddMemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMemBtnActionPerformed
+        // TODO add your handling code here:
+        try {
+            Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
+            new AddTeammate(user, task, this).setVisible(true);
+        } catch (Exception e) {}
+    }//GEN-LAST:event_AddMemBtnActionPerformed
+
+    private void assignedTaskListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_assignedTaskListValueChanged
+        // TODO add your handling code here:
+        TaskList.clearSelection();
+        try {
+            Task task = user.getAssignedTasks().get(assignedTaskList.getSelectedIndex());
+            loadTaskPanel(task);
+        } catch (Exception e) {}
+    }//GEN-LAST:event_assignedTaskListValueChanged
+
+    private void TaskListFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TaskListFocusLost
+        // TODO add your handling code here:
+        // TaskList.clearSelection();
+        // loadTaskPanel(null);
+    }//GEN-LAST:event_TaskListFocusLost
+
+    private void assignedTaskListFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_assignedTaskListFocusLost
+        // TODO add your handling code here:
+        // assignedTaskList.clearSelection();
+        // loadTaskPanel(null);
+    }//GEN-LAST:event_assignedTaskListFocusLost
 
     /**
      * @param args the command line arguments
@@ -486,22 +506,47 @@ public class HomePage extends javax.swing.JFrame {
         });
     }
 
-    private void loadListItem() {
-        TaskList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = TaskController.getTaskTitle(user).toArray(new String[0]);
+    public void updateAssignedTaskList() {
+        assignedTaskList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = TaskController.getAssignedTaskTitle(user).toArray(new String[0]);
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public String getElementAt(int i) {
+                return strings[i];
+            }
+
+        });
+    }
+
+    public void updateTeammateList(Task task) {
+        // Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
+        if (task == null)
+        {
+            companionList.setVisible(false);
+            return;
+        }
+        companionList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = TaskController.getTeammate(task).toArray(new String[0]);
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        NoteList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "", "", "", "", "" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        companionList.setVisible(true);
 
     }
     
-    private void loadTaskPanel() {
-        if (TaskList.getSelectedValue() == null) {
+
+    private void loadListItem() {
+        updateTaskList();
+        updateAssignedTaskList();
+        updateTeammateList(null);
+
+    }
+
+    private void loadTaskPanel(Task task) {
+        if (task == null) {
             TaskName.setText("");
 
             statusLbl.setText("");
@@ -510,12 +555,10 @@ public class HomePage extends javax.swing.JFrame {
             taskTxtArea.setText("");
 
             deadlineLbl.setText("");
+            updateTeammateList(task);
 
             return;
         }
-        // TaskName.setText = 
-        int id = TaskList.getSelectedIndex();
-        Task task = user.getOwnTasks().get(id);
 
         TaskName.setText(task.getTitle());
 
@@ -525,30 +568,24 @@ public class HomePage extends javax.swing.JFrame {
         taskTxtArea.setText(task.getDescription());
 
         deadlineLbl.setText(task.getDeadline());
-
-        // taskPn.setVisible(true);
-        // notePn.setVisible(true);
-        // ObDisplay.add(taskPn);
-        // ObDisplay.add(notePn);
-
+        updateTeammateList(task);
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMemBtn;
     private javax.swing.JButton LogOutButton;
     private javax.swing.JPanel Navigator;
-    private javax.swing.JLabel NoteLbl;
-    private javax.swing.JList<String> NoteList;
-    private javax.swing.JLabel NoteName;
-    private javax.swing.JTextPane NoteTxtPn;
     private javax.swing.JTabbedPane ObDisplay;
     private javax.swing.JList<String> TaskList;
     private javax.swing.JLabel TaskName;
     private javax.swing.JPanel TeamDisplay;
     private javax.swing.JButton Update;
-    private javax.swing.JButton addNoteBtn1;
     private javax.swing.JButton addTaskBtn;
+    private javax.swing.JLabel assignedTaskLbl;
+    private javax.swing.JList<String> assignedTaskList;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JList<String> companionList;
     private javax.swing.JLabel deadlineLbl;
     private javax.swing.JButton finishBtn;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
@@ -558,11 +595,9 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JPanel notePn;
-    private javax.swing.JButton noteUpdateBtn;
-    private javax.swing.JButton rmvNoteButton;
+    private javax.swing.JButton removeTeammateBtn;
     private javax.swing.JButton rmvTaskBtn;
     private javax.swing.JLabel statusLbl;
     private javax.swing.JLabel taskLbl;
