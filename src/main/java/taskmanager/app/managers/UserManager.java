@@ -31,7 +31,7 @@ public class UserManager implements Manager<User> {
     @Override
     public User findById(int id) {
         if (!userList.isEmpty()) {
-            return userList.get(0);
+            return userList.get(id);
         }
         return null;
     }

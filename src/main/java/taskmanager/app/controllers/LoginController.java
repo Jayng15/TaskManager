@@ -29,8 +29,10 @@ public class LoginController {
         String folderDirectory = "C:/Users/jayng/Desktop/Education/study/College/Java Programming/Assignments/taskmanager/src/main/java/taskmanager/app/resources/";
 
         for (User u: userManager.getAll()) {
-            folderDirectory += u.getUserId();
-            File selectedFolder = new File(folderDirectory);
+            // System.out.println(u.getUserId());
+            String userDir = folderDirectory + u.getUserId();
+            // folderDirectory += u.getUserId();
+            File selectedFolder = new File(userDir);
             loadFilesFromFolder(selectedFolder, u);
         }
 
@@ -59,6 +61,7 @@ public class LoginController {
 
     private static void loadFilesFromFolder(File folder, User user) {
         if (folder != null && folder.isDirectory()) {
+            System.out.println(folder + " " + user.toString());
             File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
