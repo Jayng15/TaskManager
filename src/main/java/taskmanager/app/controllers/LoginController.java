@@ -92,7 +92,7 @@ public class LoginController {
                             // System.out.println(s);
                             if (!user.getUsername().equals(s))
                             {
-                                task.addCompanion(s, task);    
+                                task.addCompanion(s);    
                             }
                         }
                         user.addTask(task);
@@ -100,8 +100,10 @@ public class LoginController {
                     } catch (IOException e) {
                         // e.printStackTrace();
                         JOptionPane.showMessageDialog(null, "Error reading file: " + file.getName(), "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, e.getMessage());
+                        return;
                     }
                 }
             }

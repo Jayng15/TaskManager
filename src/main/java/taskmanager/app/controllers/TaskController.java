@@ -79,7 +79,8 @@ public class TaskController {
                 writer.write("\n");
                 writer.write(task.getCompleted() + "\n");
                 // }
-                writer.write(task.getTitle());
+                writer.write(task.getTitle().replace("\n", ""));
+                System.out.println(task.getTitle().replace("\n", ""));
                 writer.write("\n");
                 writer.write(task.getDescription());
                 JOptionPane.showMessageDialog(null, "File saved successfully!", "Success",

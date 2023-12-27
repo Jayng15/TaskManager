@@ -350,6 +350,7 @@ public class HomePage extends javax.swing.JFrame {
         );
 
         pack();
+        this.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked

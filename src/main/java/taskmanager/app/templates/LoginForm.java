@@ -7,9 +7,9 @@ package taskmanager.app.templates;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.SwingPropertyChangeSupport;
-
+import java.awt.Dimension;
 import taskmanager.app.controllers.*;
-
+import java.awt.*;
 /**
  *
  * @author jayng
@@ -31,7 +31,10 @@ public class LoginForm extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // int x = (screenSize.width - this.getWidth()) / 2;
+        // int y = (screenSize.height - this.getHeight()) / 2;
+        
         loginLbl = new javax.swing.JLabel();
         usernameFld = new javax.swing.JTextField();
         usernameLbl = new javax.swing.JLabel();
@@ -108,6 +111,7 @@ public class LoginForm extends javax.swing.JFrame {
         );
 
         pack();
+        this.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed

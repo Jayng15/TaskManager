@@ -42,7 +42,7 @@ public class AddTeammate extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         addTeamBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Teammate");
 
         usernameTxtFld.setToolTipText("");
@@ -97,6 +97,7 @@ public class AddTeammate extends javax.swing.JFrame {
         );
 
         pack();
+        this.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void usernameTxtFldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameTxtFldActionPerformed
@@ -114,7 +115,7 @@ public class AddTeammate extends javax.swing.JFrame {
         }
 
         try {
-            task.addCompanion(usernameTxtFld.getText(), task);
+            task.addCompanion(usernameTxtFld.getText());
             homePage.updateTeammateList(task);
             TaskController.writeTxtFile(task, user, null);
             this.dispose();

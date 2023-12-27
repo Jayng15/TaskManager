@@ -135,19 +135,19 @@ public class Task {
     // }
     
 
-    public void addCompanion(String username, Task task) {
+    public void addCompanion(String username) {
         User user; 
         UserManager users = LoginController.userManager;
         for (User u: users.getAll())
         {
-            if (u.getUsername().equals(username))
+            if (u.getUsername().equals(username) && (this.getAllCompanions().indexOf(u) == -1))
             {
                 this.companions.add(u);
-                u.assignTask(task);
+                u.assignTask(this);
                 return;
             }
         }
-        throw new IllegalArgumentException("Cannot find the specified user");
+        throw new IllegalArgumentException("Cannot add the specified user");
 
     }
 

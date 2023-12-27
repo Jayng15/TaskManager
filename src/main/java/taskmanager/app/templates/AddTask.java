@@ -66,7 +66,7 @@ public class AddTask extends javax.swing.JFrame {
         contentLbl = new javax.swing.JLabel();
         importBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Task");
 
         taskTitleLbl.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -172,6 +172,7 @@ public class AddTask extends javax.swing.JFrame {
                                 .addGap(19, 19, 19)));
 
         pack();
+        this.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addBtnActionPerformed
@@ -181,7 +182,7 @@ public class AddTask extends javax.swing.JFrame {
         if (selectedTaskId != -1) {
             try {
                 // Task updatedTask = new Task(titleTxtArea.getText(), contentTxtArea.getText(), deadlinePicker.getDate(), user);
-                task.setTitle(titleTxtArea.getText());
+                task.setTitle(titleTxtArea.getText().replace("\n", "").replaceAll("[^a-zA-Z0-9_]", ""));
                 task.setDescription(contentTxtArea.getText());
                 task.setDeadLine(deadlinePicker.getDate());
                 user.getOwnTasks().set(selectedTaskId, task);
@@ -197,9 +198,10 @@ public class AddTask extends javax.swing.JFrame {
 
         try {
             int count = 0;
+            String title = titleTxtArea.getText().replaceAll("[^a-zA-Z0-e_\\s+]", "");
             for (Task t: user.getOwnTasks())
             {
-                if (t.getTitle().equals(titleTxtArea.getText())) {
+                if (t.getTitle().equals(title)) {
                     JOptionPane.showMessageDialog(null, "This title is already exist, please use an another title");
                     return;
                     // titleTxtArea.setText(titleTxtArea.getText() + " #" + count);
@@ -207,7 +209,7 @@ public class AddTask extends javax.swing.JFrame {
                 count++;
             }
 
-            Task task = new Task(titleTxtArea.getText(), contentTxtArea.getText(), deadlinePicker.getDate(), user);
+            Task task = new Task(title, contentTxtArea.getText(), deadlinePicker.getDate(), user);
             user.addTask(task);
             homePage.updateTaskList();
             TaskController.writeTxtFile(task, user, null);
@@ -233,6 +235,9 @@ public class AddTask extends javax.swing.JFrame {
                 StringBuilder content = new StringBuilder();
                 String line;
                 // deadLine.append(reader.readLine());
+                reader.readLine();
+                reader.readLine();
+                reader.readLine();
                 title.append(reader.readLine());
                 reader.readLine();
                 while ((line = reader.readLine()) != null) {
