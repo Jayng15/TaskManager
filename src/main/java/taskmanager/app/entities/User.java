@@ -4,19 +4,19 @@ import java.util.*;
 
 import taskmanager.app.controllers.LoginController;
 import taskmanager.app.managers.UserManager;
+import taskmanager.app.controllers.*;
+
 public class User {
-    private int userId;    
+    private int userId;
     private String username;
     private String password;
     private List<Task> ownedTasks;
     private List<Task> assignedTasks;
     private UserManager userManager;
-    
 
-    public User(String username, String password)
-    {
+    public User(String username, String password) {
         // this.userId = userId;
-        this.username = username;  
+        this.username = username;
         this.password = password;
         this.ownedTasks = new ArrayList<>();
         this.assignedTasks = new ArrayList<>();
@@ -32,14 +32,8 @@ public class User {
 
     public void setUserId() {
         List<User> users = LoginController.userManager.getAll();
-        for (User u: users)
-        {
-            if (this.username == u.getUsername())
-            {
-                this.userId = users.indexOf(u);
-                return;
-            }
-        }
+        users.add(this);
+        this.userId = users.indexOf(this);
     }
 
     public String getUsername() {
@@ -68,9 +62,11 @@ public class User {
         this.ownedTasks.add(task);
     }
 
-    public void removeTask(Task task){
+    public void removeTask(Task task) {
         if (task != null) {
+            TaskController.deleteFile(this, task.getTitle());
             this.ownedTasks.remove(task);
+            task.Deleted();
         }
     }
 
@@ -79,14 +75,19 @@ public class User {
     }
 
     public void assignTask(Task task) {
-        if (task != null)
-        {
+        if (task != null) {
             this.assignedTasks.add(task);
             return;
         }
         return;
     }
 
+    public void removeAssignTask(Task task) {
+        if (task != null) {
+            this.assignedTasks.remove(task);
+            return;
+        }
+        return;
+    }
+
 }
-
-

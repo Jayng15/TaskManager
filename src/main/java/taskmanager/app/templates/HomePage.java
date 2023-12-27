@@ -382,6 +382,7 @@ public class HomePage extends javax.swing.JFrame {
             Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
             user.removeTask(task);
             updateTaskList();
+            loadTaskPanel(null);
         } catch (IndexOutOfBoundsException e) {}
 
     }//GEN-LAST:event_rmvTaskBtnActionPerformed
@@ -396,6 +397,7 @@ public class HomePage extends javax.swing.JFrame {
         try {
             Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
             task.setCompleted(true);
+            TaskController.writeTxtFile(task, user, null);
             statusLbl.setText(task.getCompleted());
         } catch (Exception e) {}
 
@@ -413,8 +415,8 @@ public class HomePage extends javax.swing.JFrame {
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
         // TODO add your handling code here:
         try {
-
             new AddTask(user, this, TaskList.getSelectedIndex()).setVisible(true);;
+            loadTaskPanel(null);
         } catch (Exception e) {}
     }//GEN-LAST:event_UpdateActionPerformed
 
@@ -424,7 +426,9 @@ public class HomePage extends javax.swing.JFrame {
             Task task = user.getOwnTasks().get(TaskList.getSelectedIndex());
             User selectedUser = task.getAllCompanions().get(companionList.getSelectedIndex());
             task.removeCompanion(selectedUser);
+            selectedUser.removeAssignTask(task);
             updateTeammateList(task);
+            TaskController.writeTxtFile(task, user, null);
         } catch (IndexOutOfBoundsException e) {}
         
     }//GEN-LAST:event_removeTeammateBtnActionPerformed

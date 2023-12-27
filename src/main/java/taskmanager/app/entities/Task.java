@@ -33,12 +33,6 @@ public class Task {
         setCompleted(false);
         companions = new ArrayList<>();
         companions.add(author);
-        // this.description = description;
-        // this.completed = completed;
-        // setActiveDate(activeDate);
-        // this.author = author;
-
-        // this.id = id;
     }
 
     // public Task() {
@@ -83,6 +77,15 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public void setCompleted(String status) {
+        if (status.equals("outdated") || status.equals("pending")) {
+            this.completed = false;
+            return;
+        } else {
+            this.completed = true;
+        }
     }
     
     public String getCompleted() {
@@ -150,6 +153,17 @@ public class Task {
 
     public void removeCompanion(User user) {
         this.companions.remove(user);
+    }
+
+    public void Deleted() {
+        this.createdDate = null;
+        this.deadLine = null;
+        this.title = null;
+        this.description = null;
+        for (User u: companions) {
+            u.removeAssignTask(this);
+        }
+        this.companions = null;
     }
 
     public List<User> getAllCompanions() {

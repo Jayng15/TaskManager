@@ -7,6 +7,7 @@ package taskmanager.app.templates;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import taskmanager.app.controllers.TaskController;
 import taskmanager.app.entities.*;
 /**
  *
@@ -115,6 +116,7 @@ public class AddTeammate extends javax.swing.JFrame {
         try {
             task.addCompanion(usernameTxtFld.getText(), task);
             homePage.updateTeammateList(task);
+            TaskController.writeTxtFile(task, user, null);
             this.dispose();
             return;
         }
